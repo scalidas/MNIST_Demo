@@ -4,6 +4,8 @@ from PIL import Image, ImageDraw
 import numpy as np
 import tensorflow as tf
 from tkinter import font
+from img_util import img_util
+
 class DrawingApp:
     def __init__(self, root):
         self.root = root
@@ -78,23 +80,14 @@ class DrawingApp:
         self.draw = ImageDraw.Draw(self.image)
         
     def save_drawing(self):
-        # Convert the PIL image to a NumPy array
+        #Get Numpy array of the image drawn
         img_array = np.array(self.image)
 
-        # You can use img_array for further processing or save it as an image
-        # For example, to save as a PNG image:
-        img = Image.fromarray(img_array)
-        img.save("C:/Users/calid/OneDrive/Documents/Purdue/Freshman/ENGR133/Individual Project/drawn_image.png")
-
         #Subsample down to 28 by 28
-        img_array = self.subsample(img_array)
-        img_array = self.subsample(img_array)
-        img_array = self.subsample(img_array)
-        img_array = self.subsample(img_array)
-
-        print(img_array.shape)
-
-        
+        img_array = img_util.subsample(self, img_array)
+        img_array = img_util.subsample(self, img_array)
+        img_array = img_util.subsample(self, img_array)
+        img_array = img_util.subsample(self, img_array)
 
         """
         PROBLEMS:
@@ -103,21 +96,11 @@ class DrawingApp:
         """
 
         #Reshape array to be compatible with model
-        arr_for_prediction = np.array([img_array])
-        #arr_for_prediction = np.append(arr_for_prediction, )
+        arr_for_prediction = img_util.reshape_for_model(self, img_array)
 
-        arr_for_prediction = arr_for_prediction.reshape(arr_for_prediction.shape[0], arr_for_prediction.shape[1], arr_for_prediction.shape[2], 1)
-
-        arr_for_prediction = np.array(arr_for_prediction, dtype=np.float32)
-        arr_for_prediction = arr_for_prediction / 255.0
-
-        arr_for_prediction = 1 - arr_for_prediction
-
-        print(arr_for_prediction)
-        print(arr_for_prediction.shape)
-
+        #Get prediction tensor
         prediction = self.model.predict(arr_for_prediction)
-        print(prediction)
+
         index = np.argmax(prediction)
 
         print(index)
