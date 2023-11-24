@@ -1,23 +1,29 @@
 import tkinter as tk
-from tkinter import Button
+from tkinter import Button, Label
 from PIL import Image, ImageDraw
 import numpy as np
 import tensorflow as tf
-
+from tkinter import font
 class DrawingApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Freehand Drawing App")
+        self.root.title("MNIST Digit Predictor")
         
         self.canvas = tk.Canvas(self.root, width=448, height=448, bg='white')
         self.canvas.pack()
+
+        button_font = font.Font(family='Helvetica', size=36, weight='bold')
+
+        self.clear_button = Button(self.root, text="Clear", height=2, font=button_font, command=self.clear_canvas)
+        self.clear_button.pack(side=tk.LEFT) 
         
-        self.clear_button = Button(self.root, text="Clear", command=self.clear_canvas)
-        self.clear_button.pack() 
         
-        self.save_button = Button(self.root, text="Save", command=self.save_drawing)
-        self.save_button.pack()
-        
+        self.save_button = Button(self.root, text="Predict", height=2, font=button_font, command=self.save_drawing)
+        self.save_button.pack(side=tk.LEFT)
+
+        self.prediction = Label(self.root, text="0", height=2, font=button_font)
+        self.prediction.pack(side=tk.LEFT)
+
         self.drawing = False
         self.last_x, self.last_y = None, None
         
@@ -115,6 +121,7 @@ class DrawingApp:
         index = np.argmax(prediction)
 
         print(index)
+        self.prediction.config(text=f"{index}")
 
         img = Image.fromarray(img_array)
         img.save("C:/Users/calid/OneDrive/Documents/Purdue/Freshman/ENGR133/Individual Project/drawn_image_subsampled.png")
