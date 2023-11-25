@@ -3,13 +3,13 @@ import numpy as np
 
 class img_util:
 
-    def subsample(self, image):
+    def subsample(image):
         #Use array slicing to delete every other row
         subsampled_image = image[::2, ::2]
 
         return subsampled_image
     
-    def reshape_for_model(self, img_array):
+    def reshape_for_model(img_array):
         arr_for_prediction = np.array([img_array])
         arr_for_prediction = arr_for_prediction.reshape(arr_for_prediction.shape[0], arr_for_prediction.shape[1], arr_for_prediction.shape[2], 1)
 

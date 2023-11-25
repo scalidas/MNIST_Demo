@@ -1,12 +1,11 @@
 import tkinter as tk
-from tkinter import Button, Label
+from tkinter import Button, Label, font
 from PIL import Image, ImageDraw
 import numpy as np
 import tensorflow as tf
-from tkinter import font
 from img_util import img_util
 
-class DrawingApp:
+class DigitPredictor:
     def __init__(self, root):
         self.root = root
         self.root.title("MNIST Digit Predictor")
@@ -18,7 +17,6 @@ class DrawingApp:
 
         self.clear_button = Button(self.root, text="Clear", height=2, font=button_font, command=self.clear_canvas)
         self.clear_button.pack(side=tk.LEFT) 
-        
         
         self.save_button = Button(self.root, text="Predict", height=2, font=button_font, command=self.save_drawing)
         self.save_button.pack(side=tk.LEFT)
@@ -84,10 +82,10 @@ class DrawingApp:
         img_array = np.array(self.image)
 
         #Subsample down to 28 by 28
-        img_array = img_util.subsample(self, img_array)
-        img_array = img_util.subsample(self, img_array)
-        img_array = img_util.subsample(self, img_array)
-        img_array = img_util.subsample(self, img_array)
+        img_array = img_util.subsample(img_array)
+        img_array = img_util.subsample(img_array)
+        img_array = img_util.subsample(img_array)
+        img_array = img_util.subsample(img_array)
 
         """
         PROBLEMS:
@@ -96,7 +94,7 @@ class DrawingApp:
         """
 
         #Reshape array to be compatible with model
-        arr_for_prediction = img_util.reshape_for_model(self, img_array)
+        arr_for_prediction = img_util.reshape_for_model(img_array)
 
         #Get prediction tensor
         prediction = self.model.predict(arr_for_prediction)
@@ -117,5 +115,5 @@ class DrawingApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = DrawingApp(root)
+    app = DigitPredictor(root)
     root.mainloop()
