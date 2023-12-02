@@ -26,7 +26,8 @@ num_classes = 10
 epochs = 2
 
 
-#Define Model Architecture
+#The following lines are copied from online, at this website: https://www.kaggle.com/code/amyjang/tensorflow-mnist-cnn-tutorial
+#I do not know how to design model architecture myself, and this architecture worked really well
 model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu', input_shape=input_shape),
     tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
@@ -51,19 +52,9 @@ history = model.fit(x_train, y_train,
                     validation_split=0.1,)
 
 #model.save('model.keras')
-model.save_weights('model_weights.h5')
-
-#print details about the model
-fig, ax = plt.subplots(2,1)
-ax[0].plot(history.history['loss'], color='b', label="Training Loss")
-ax[0].plot(history.history['val_loss'], color='r', label="Validation Loss",axes =ax[0])
-legend = ax[0].legend(loc='best', shadow=True)
-
-ax[1].plot(history.history['acc'], color='b', label="Training Accuracy")
-ax[1].plot(history.history['val_acc'], color='r',label="Validation Accuracy")
-legend = ax[1].legend(loc='best', shadow=True)
+model.save_weights('model_weights_newly_trained.h5')
 
 
-#uses the test images and labels
+#Evaluate model on test data and evaluate results
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print('\nTest accuracy:', test_acc)

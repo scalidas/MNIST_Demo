@@ -5,7 +5,14 @@ class img_util:
 
     def subsample(image):
         #Use array slicing to delete every other row
-        subsampled_image = image[::2, ::2]
+        #subsampled_image = image[::2, ::2]
+
+        rows, columns = image.shape
+        subsampled_image = np.zeros((rows // 2, columns // 2), dtype=np.uint8)
+        for i in range(0, rows, 2):
+            for j in range(0, columns, 2):
+                subsampled_image[i // 2, j // 2] = image[i, j]
+                #print(image[i, j])
 
         return subsampled_image
     
