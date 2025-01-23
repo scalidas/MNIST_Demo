@@ -35,8 +35,6 @@ class DigitPredictor:
         num_classes = 10
         input_shape = (28, 28, 1)
 
-        #The following lines are copied from online, at this website: https://www.kaggle.com/code/amyjang/tensorflow-mnist-cnn-tutorial
-        #I do not know how to design model architecture myself, and this architecture worked really well
         self.model = tf.keras.models.Sequential([
             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu', input_shape=input_shape),
             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
